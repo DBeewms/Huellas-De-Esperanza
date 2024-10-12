@@ -28,4 +28,40 @@
             </div>
         </div>
     </div>
+
+    <x-slot name="header">
+        <h2 class="font-semibold text-xl text-gray-800 leading-tight">
+            {{ __('Pets') }}
+        </h2>
+    </x-slot>
+
+    <div >
+        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2 px-2">
+            @foreach($pets as $pet)
+            <div class="flex flex-col items-center bg-white shadow-md rounded-lg p-2 hover:shadow-lg transition-shadow border border-gray-200 hover:border-gray-400 hover:bg-gray-50 max-w-xs mx-auto m-1" style="width: 250px; height: 400px;">
+                <div class="text-lg font-medium text-gray-900 dark:text-gray-100 mb-2">
+                    {{ $pet->name }}
+                </div>
+                <div class="w-40 h-40 mb-2">
+                    <img src="{{ asset('storage/photos/' . basename($pet->photo)) }}" alt="{{ $pet->name }}" class="w-full h-full object-cover rounded-lg">
+                </div>
+                <div class="text-center">
+                    <div class="text-sm text-gray-500 dark:text-gray-400 mb-1">
+                        <strong>Breed:</strong> {{ $pet->breed }}
+                    </div>
+                    <div class="text-sm text-gray-500 dark:text-gray-400 mb-1">
+                        <strong>Sex:</strong> {{ ucfirst($pet->sex) }}
+                    </div>
+                    <div class="text-sm text-gray-500 dark:text-gray-400 mb-2">
+                        <strong>FechaNac:</strong> {{ $pet->dob }}
+                    </div>
+                    <button class="px-4 py-2 bg-green-500 text-white rounded-full hover:bg-green-700 transition-colors">
+                        Adoptar
+                    </button>
+                </div>
+            </div>
+            @endforeach
+        </div>
+    </div>
+
 </x-app-layout>

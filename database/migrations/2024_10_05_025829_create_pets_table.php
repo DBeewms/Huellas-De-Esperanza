@@ -13,15 +13,16 @@ return new class extends Migration
     {
         Schema::create('pets', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('pet_type_id')->constrained();
+            $table->unsignedBigInteger('pet_type_id');
             $table->string('name');
             $table->string('breed');
-            $table->string('sex');
+            $table->enum('sex', ['male', 'female']);
             $table->date('dob'); // Date of Birth
             $table->string('photo')->nullable();
             $table->text('description')->nullable();
             $table->boolean('status')->default(true);
             $table->timestamps();
+            $table->foreign('pet_type_id')->references('id')->on('pet_types')->onDelete('cascade');
         });
     }
 

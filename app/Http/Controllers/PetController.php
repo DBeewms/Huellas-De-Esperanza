@@ -28,21 +28,21 @@ class PetController extends Controller
         $pet->name = $request->name;
         $pet->pet_type_id = $request->pet_type_id;
         $pet->breed = $request->breed;
-        $pet->sex = $request->sex; 
+        $pet->sex = $request->sex; // Nuevo campo
         $pet->dob = $request->dob;
         $pet->description = $request->description;
         $pet->status = $request->status;
-    
+
         if ($request->hasFile('photo')) {
             // Subir la imagen y obtener la ruta
             $path = $request->file('photo')->store('public/photos');
-            
+
             // Asignar la ruta de la imagen al campo 'photo' del modelo
             $pet->photo = $path;
         }
-    
+
         $pet->save();
-    
+
         return redirect()->route('pets.index')->with('success', 'Pet created successfully.');
     }
 
@@ -65,26 +65,26 @@ class PetController extends Controller
         $pet->name = $request->name;
         $pet->pet_type_id = $request->pet_type_id;
         $pet->breed = $request->breed;
-        $pet->sex = $request->sex; 
+        $pet->sex = $request->sex; // Nuevo campo
         $pet->dob = $request->dob;
         $pet->description = $request->description;
         $pet->status = $request->status;
-    
+
         if ($request->hasFile('photo')) {
             // Eliminar la foto anterior si existe
             if ($pet->photo && Storage::exists($pet->photo)) {
                 Storage::delete($pet->photo);
             }
-    
+
             // Subir la nueva imagen y obtener la ruta
             $path = $request->file('photo')->store('public/photos');
-            
+
             // Asignar la ruta de la nueva imagen al campo 'photo' del modelo
             $pet->photo = $path;
         }
-    
+
         $pet->save();
-    
+
         return redirect()->route('pets.index')->with('success', 'Pet updated successfully.');
     }
 

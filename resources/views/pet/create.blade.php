@@ -31,7 +31,7 @@
                                 <input type="text" name="breed" id="breed" class="mt-2 w-full p-2 border rounded-lg">
                             </div>
                             <div class="bg-white shadow-md rounded-lg p-4 mb-4">
-                                <label for="sex" class="text-lg font-semibold text-gray-900">Sexo</label>
+                                <label for="sex" class="text-lg font-semibold text-gray-900">Sex</label>
                                 <select name="sex" id="sex" class="mt-2 w-full p-2 border rounded-lg">
                                     <option value="male">Male</option>
                                     <option value="female">Female</option>
