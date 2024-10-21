@@ -53,7 +53,7 @@
                                     @endforeach
                                 </select>
                             </div>
-                            <input type="hidden" name="status" value="1"> <!-- Cambiado a 1 para representar true -->
+                            <input type="hidden" name="status" value="available"> <!-- Estado inicial como disponible -->
                         </div>
                     </div>
                     <div class="p-6 sm:px-20 bg-white border-t border-gray-200">

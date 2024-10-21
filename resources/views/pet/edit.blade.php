@@ -1,6 +1,6 @@
 <x-app-layout>
     <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 leading-tight">
+        <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
             {{ __('Edit Pet') }}
         </h2>
     </x-slot>
@@ -8,7 +8,7 @@
     <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg">
-                <form action="{{ route('pets.update', $pet) }}" method="POST" enctype="multipart/form-data">
+                <form action="{{ route('pets.update', $pet->id) }}" method="POST" enctype="multipart/form-data">
                     @csrf
                     @method('PATCH')
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-6 p-6">
@@ -55,19 +55,19 @@
                                     @endforeach
                                 </select>
                             </div>
-                            <div class="bg-white shadow-md rounded-lg p-4">
+                            <div class="bg-white shadow-md rounded-lg p-4 mb-4">
                                 <label for="status" class="text-lg font-semibold text-gray-900">Status</label>
                                 <select name="status" id="status" class="mt-2 w-full p-2 border rounded-lg">
-                                    <option value="1" {{ $pet->status == 1 ? 'selected' : '' }}>Available</option>
-                                    <option value="0" {{ $pet->status == 0 ? 'selected' : '' }}>Adopted</option>
+                                    <option value="available" {{ $pet->status == 'available' ? 'selected' : '' }}>Available</option>
+                                    <option value="waiting" {{ $pet->status == 'waiting' ? 'selected' : '' }}>Waiting</option>
+                                    <option value="adopted" {{ $pet->status == 'adopted' ? 'selected' : '' }}>Adopted</option>
                                 </select>
                             </div>
-                        </div>
-                    </div>
-                    <div class="p-6 sm:px-20 bg-white border-t border-gray-200">
-                        <div class="flex justify-between">
-                            <button type="submit" class="px-4 py-2 bg-blue-500 text-white rounded-full hover:bg-blue-700">Save</button>
-                            <a href="{{ route('pets.index') }}" class="px-4 py-2 bg-gray-500 text-white rounded-full hover:bg-gray-700">Cancel</a>
+                            <div class="bg-white shadow-md rounded-lg p-4 mb-4">
+                                <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+                                    Update Pet
+                                </button>
+                            </div>
                         </div>
                     </div>
                 </form>

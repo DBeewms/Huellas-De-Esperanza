@@ -40,6 +40,28 @@
             {{ $slot }}
         </main>
     </div>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    @if (session('error'))
+        <script>
+            /dar un alerta de error con estilos/
+            Swal.fire({
+                icon: 'error',
+                title: 'Error',
+                text: '{{ session('error') }}',
+            })
+        </script>
+    @endif
+
+    @if (session('success'))
+        <script>
+            /dar un alerta de exito con estilos/
+            Swal.fire({
+                icon: 'success',
+                title: 'Éxito',
+                text: '{{ session('success') }}',
+            })
+        </script>
+    @endif
 </body>
 
 </html>

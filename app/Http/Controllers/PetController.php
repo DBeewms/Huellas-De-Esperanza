@@ -12,7 +12,7 @@ class PetController extends Controller
 {
     public function index()
     {
-        $pets = Pet::all();
+        $pets = Pet::where('status', 'available')->get(); // Mostrar solo mascotas disponibles
         return view('pet.index', compact('pets'));
     }
 
@@ -31,14 +31,14 @@ class PetController extends Controller
         $pet->sex = $request->sex; // Nuevo campo
         $pet->dob = $request->dob;
         $pet->description = $request->description;
-        $pet->status = $request->status;
+        $pet->status = 'available'; // Estado inicial
+        $pet->save();
 
         if ($request->hasFile('photo')) {
-            // Subir la imagen y obtener la ruta
-            $path = $request->file('photo')->store('public/photos');
-
-            // Asignar la ruta de la imagen al campo 'photo' del modelo
-            $pet->photo = $path;
+            $image = $request->file('photo');
+            $imageName = time() . '.' . $image->getClientOriginalExtension();
+            $image->move(public_path('photos'), $imageName);
+            $pet->photo = $imageName;
         }
 
         $pet->save();
@@ -72,15 +72,15 @@ class PetController extends Controller
 
         if ($request->hasFile('photo')) {
             // Eliminar la foto anterior si existe
-            if ($pet->photo && Storage::exists($pet->photo)) {
-                Storage::delete($pet->photo);
+            if ($pet->photo && file_exists(public_path('photos/' . $pet->photo))) {
+                unlink(public_path('photos/' . $pet->photo));
             }
 
             // Subir la nueva imagen y obtener la ruta
-            $path = $request->file('photo')->store('public/photos');
-
-            // Asignar la ruta de la nueva imagen al campo 'photo' del modelo
-            $pet->photo = $path;
+            $image = $request->file('photo');
+            $imageName = time() . '.' . $image->getClientOriginalExtension();
+            $image->move(public_path('photos'), $imageName);
+            $pet->photo = $imageName;
         }
 
         $pet->save();
@@ -93,8 +93,8 @@ class PetController extends Controller
         $pet = Pet::find($id);
 
         // Eliminar la foto de la mascota si existe
-        if ($pet->photo && Storage::exists($pet->photo)) {
-            Storage::delete($pet->photo);
+        if ($pet->photo && file_exists(public_path('photos/' . $pet->photo))) {
+            unlink(public_path('photos/' . $pet->photo));
         }
 
         $pet->delete();

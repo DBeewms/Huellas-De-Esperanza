@@ -20,7 +20,7 @@ return new class extends Migration
             $table->date('dob'); // Date of Birth
             $table->string('photo')->nullable();
             $table->text('description')->nullable();
-            $table->boolean('status')->default(true);
+            $table->enum('status', ['available', 'waiting', 'adopted'])->default('available'); // Updated status field
             $table->timestamps();
             $table->foreign('pet_type_id')->references('id')->on('pet_types')->onDelete('cascade');
         });
@@ -34,3 +34,4 @@ return new class extends Migration
         Schema::dropIfExists('pets');
     }
 };
+
