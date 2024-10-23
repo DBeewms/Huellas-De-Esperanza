@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -9,10 +10,12 @@ class Pet extends Model
     use HasFactory;
 
     protected $fillable = [
-        'name', 'pet_type_id', 'breed', 'dob', 'description', 'photo', 'status', 'sex'
+        'name', 'pet_type_id', 'breed', 'sex', 'dob', 'description', 'photo', 'status'
     ];
 
-    protected $casts = [
-        'status' => 'boolean',
-    ];
+    // Definir la relación con el modelo PetType
+    public function petType()
+    {
+        return $this->belongsTo(PetType::class);
+    }
 }

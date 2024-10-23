@@ -62,6 +62,9 @@ Route::middleware('auth')->group(function () {
     Route::post('/finalize-adoption/{petId}', [AdoptionController::class, 'finalizeAdoption'])->name('finalizeAdoption');
     Route::post('/reject-adoption/{petId}', [AdoptionController::class, 'rejectAdoption'])->name('rejectAdoption');
     Route::get('/waiting-list', [AdoptionController::class, 'waitingList'])->name('waitingList');
+    Route::get('/general-waiting-list', [AdoptionController::class, 'generalWaitingList'])->name('generalWaitingList');
+    Route::get('/adopted-pets', [AdoptionController::class, 'adoptedPets'])->name('adoptedPets');
+    Route::get('/adopted-pet-details/{id}', [AdoptionController::class, 'adoptedPetDetails'])->name('adoptedPetDetails');
 });
 
 require __DIR__.'/auth.php';

@@ -18,7 +18,7 @@
                                 {{ $pet->name }}
                             </div>
                             <div class="bg-gray-100 p-4 rounded-lg">
-                                <img src="{{ asset('storage/' . $pet->photo) }}" alt="{{ $pet->name }}" class="w-full h-auto rounded-lg">
+                                <img src="{{ asset('photos/' . $pet->photo) }}" alt="{{ $pet->name }}" class="w-full h-auto rounded-lg">
                                 <input type="file" name="photo" accept=".jpg, .jpeg" class="mt-4">
                             </div>
                         </div>

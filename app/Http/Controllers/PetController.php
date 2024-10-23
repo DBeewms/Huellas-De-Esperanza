@@ -12,8 +12,9 @@ class PetController extends Controller
 {
     public function index()
     {
-        $pets = Pet::where('status', 'available')->get(); // Mostrar solo mascotas disponibles
-        return view('pet.index', compact('pets'));
+         // Mostrar solo mascotas disponibles o en espera
+         $pets = Pet::whereIn('status', ['available', 'waiting'])->get();
+         return view('pet.index', compact('pets'));
     }
 
     public function create()

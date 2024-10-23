@@ -15,7 +15,7 @@
                             {{ $pet->name }}
                         </div>
                         <div class="bg-gray-100 p-4 rounded-lg">
-                            <img src="{{ asset('storage/photos/' . basename($pet->photo)) }}" alt="{{ $pet->name }}" class="w-full h-auto rounded-lg">
+                            <img src="{{ asset('photos/' . $pet->photo) }}" alt="{{ $pet->name }}" class="w-full h-auto rounded-lg">
                         </div>
                     </div>
                     <!-- Sección derecha -->
