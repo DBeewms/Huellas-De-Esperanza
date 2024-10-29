@@ -42,6 +42,10 @@
                     <img src="https://via.placeholder.com/150" alt="Mascotas Adoptadas" class="mx-auto mb-4">
                     <h3 class="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-4">Registro de Mascotas Adoptadas</h3>
                     <a href="{{ route('adoptedPets') }}" class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded">Mascotas Adoptadas</a>
+                    <div class="mt-4">
+                        <a href="{{ route('exportAdoptedPetsToExcel') }}" class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded">Exportar a Excel</a>
+                        <a href="{{ route('exportAdoptedPetsToPdf') }}" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded ml-2">Exportar a PDF</a>
+                    </div>
                 </div>
             </div>
 

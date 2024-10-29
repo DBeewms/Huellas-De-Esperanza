@@ -7,6 +7,9 @@ use App\Models\Pet;
 use App\Models\WaitingList;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use App\Exports\AdoptedPetsExport;
+use Maatwebsite\Excel\Facades\Excel;
+use Barryvdh\DomPDF\Facade\Pdf;
 
 class AdoptionController extends Controller
 {
@@ -116,5 +119,17 @@ class AdoptionController extends Controller
         $adoption = Adoption::with('pet', 'user')->findOrFail($id);
 
         return view('adopted_pets.adopted_pet_details', compact('adoption'));
+    }
+
+    public function exportAdoptedPetsToExcel()
+    {
+        return Excel::download(new AdoptedPetsExport, 'adopted_pets.xlsx');
+    }
+
+    public function exportAdoptedPetsToPdf()
+    {
+        $adoptedPets = Adoption::where('status', 'completed')->with('pet', 'user')->get();
+        $pdf = Pdf::loadView('adopted_pets.adopted_pets_pdf', compact('adoptedPets'));
+        return $pdf->download('adopted_pets.pdf');
     }
 }

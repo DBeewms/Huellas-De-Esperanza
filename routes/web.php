@@ -65,6 +65,8 @@ Route::middleware('auth')->group(function () {
     Route::get('/general-waiting-list', [AdoptionController::class, 'generalWaitingList'])->name('generalWaitingList');
     Route::get('/adopted-pets', [AdoptionController::class, 'adoptedPets'])->name('adoptedPets');
     Route::get('/adopted-pet-details/{id}', [AdoptionController::class, 'adoptedPetDetails'])->name('adoptedPetDetails');
+    Route::get('/export-adopted-pets-excel', [AdoptionController::class, 'exportAdoptedPetsToExcel'])->name('exportAdoptedPetsToExcel');
+    Route::get('/export-adopted-pets-pdf', [AdoptionController::class, 'exportAdoptedPetsToPdf'])->name('exportAdoptedPetsToPdf');
 });
 
 require __DIR__.'/auth.php';
