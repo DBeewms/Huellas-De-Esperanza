@@ -40,6 +40,7 @@ class RegisteredUserController extends Controller
             'name' => $request->name,
             'email' => $request->email,
             'password' => Hash::make($request->password),
+            'is_admin' => $request->has('is_admin') ? $request->is_admin : false, // Asignar rol de administrador si está presente
         ]);
 
         event(new Registered($user));

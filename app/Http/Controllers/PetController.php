@@ -12,9 +12,9 @@ class PetController extends Controller
 {
     public function index()
     {
-         // Mostrar solo mascotas disponibles o en espera
-         $pets = Pet::whereIn('status', ['available', 'waiting'])->get();
-         return view('pet.index', compact('pets'));
+        // Mostrar solo mascotas disponibles o en espera
+        $pets = Pet::whereIn('status', ['available', 'waiting'])->get();
+        return view('pet.index', compact('pets'));
     }
 
     public function create()
@@ -49,7 +49,14 @@ class PetController extends Controller
 
     public function show(string $id)
     {
+        // Usa findOrFail para arrojar un 404 si no se encuentra la mascota
         $pet = Pet::find($id);
+
+        // if (!$pet) {
+        //     // Redirige al índice si la mascota no se encuentra
+        //     return redirect()->route('pets.index')->with('error', 'Pet not found.');
+        // }
+
         return view('pet.show', compact('pet'));
     }
 

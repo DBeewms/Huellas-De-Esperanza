@@ -1,6 +1,6 @@
 <x-app-layout>
     <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 leading-tight">
+        <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
             {{ __('Adopted Pets') }}
         </h2>
     </x-slot>
@@ -10,13 +10,13 @@
             <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 text-gray-900 dark:text-gray-100">
                     @if($adoptedPets->isEmpty())
-                        <p>No adopted pets found.</p>
+                        <p class="text-center text-gray-500 dark:text-gray-400">No adopted pets found.</p>
                     @else
-                        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+                        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
                             @foreach($adoptedPets as $adoption)
-                                <div class="bg-white dark:bg-gray-800 shadow-md rounded-lg p-4 hover:shadow-lg transition-shadow border border-gray-200 hover:border-gray-400 hover:bg-gray-50 relative">
-                                    <div class="absolute top-4 right-4 text-white px-2 py-1 rounded-full">
-                                        <span class="bg-blue-500 px-2 py-1 rounded-full">Adoptado</span>
+                                <div class="bg-white dark:bg-gray-700 shadow-md rounded-lg p-6 hover:shadow-lg transition-shadow border border-gray-200 dark:border-gray-600 hover:border-gray-400 dark:hover:border-gray-500 hover:bg-gray-50 dark:hover:bg-gray-600 relative">
+                                    <div class="absolute top-4 right-4 text-white px-2 py-1 rounded-full bg-blue-500">
+                                        Adoptado
                                     </div>
                                     <div class="flex items-center mb-4">
                                         <img src="{{ asset('photos/' . $adoption->pet->photo) }}" alt="{{ $adoption->pet->name }}" class="w-12 h-12 rounded-full mr-4">
@@ -26,7 +26,7 @@
                                         </div>
                                     </div>
                                     <div class="w-full h-40 mb-4">
-                                        <img src="{{ asset('photos/' . $adoption->pet->photo) }}" alt="{{ $adoption->pet->name }}" class="w-full h-full object-cover rounded-lg">
+                                        <img src="{{ asset('photos/' . $adoption->pet->photo) }}" alt="{{ $adoption->pet->name }}" class="w-full h-full object-cover rounded-full">
                                     </div>
                                     <div class="text-center">
                                         <div class="text-sm text-gray-500 dark:text-gray-400 mb-1">

@@ -92,6 +92,7 @@ class AdoptionController extends Controller
         return redirect()->route('pets.index')->with('success', 'You have successfully rejected the adoption.');
     }
 
+    // Lista de espera individual (para usuarios)
     public function waitingList()
     {
         $user = Auth::user();
@@ -100,11 +101,18 @@ class AdoptionController extends Controller
         return view('waiting_lists.waiting_list', compact('waitingList'));
     }
 
+    // Lista de espera general (solo para administradores)
     public function generalWaitingList()
     {
-        $waitingList = WaitingList::with('pet', 'user')->get();
+        // Verificar si el usuario es administrador
+        if (!Auth::user()->is_admin) {
+            return redirect()->route('dashboard')->with('error', 'No tienes permiso para acceder a esta página.');
+        }
 
-        return view('waiting_lists.waiting_list_general', compact('waitingList'));
+        // Obtener todas las mascotas en lista de espera
+        $generalWaitingList = WaitingList::with('pet', 'user')->get();
+
+        return view('waiting_lists.waiting_list_general', compact('generalWaitingList'));
     }
 
     public function adoptedPets()

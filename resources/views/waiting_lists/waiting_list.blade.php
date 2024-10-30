@@ -10,11 +10,11 @@
             <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 text-gray-900 dark:text-gray-100">
                     @if($waitingList->isEmpty())
-                        <p>No pets in the waiting list.</p>
+                        <p class="text-center text-lg">No pets in the waiting list.</p>
                     @else
-                        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+                        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
                             @foreach($waitingList as $item)
-                                <div class="bg-white dark:bg-gray-800 shadow-md rounded-lg p-4 hover:shadow-lg transition-shadow border border-gray-200 hover:border-gray-400 hover:bg-gray-50 relative">
+                                <div class="bg-white dark:bg-gray-800 shadow-md rounded-lg p-4 hover:shadow-lg transition-shadow border border-gray-200 dark:border-gray-700 hover:border-gray-400 dark:hover:border-gray-600 hover:bg-gray-50 dark:hover:bg-gray-700 relative">
                                     <div class="absolute top-4 right-4 text-white px-2 py-1 rounded-full">
                                         @if($item->pet->status == 'available')
                                             <span class="bg-green-500 px-2 py-1 rounded-full">Disponible</span>
@@ -32,7 +32,7 @@
                                         </div>
                                     </div>
                                     <div class="w-full h-40 mb-4">
-                                        <img src="{{ asset('photos/' . $item->pet->photo) }}" alt="{{ $item->pet->name }}" class="w-full h-full object-cover rounded-lg">
+                                        <img src="{{ asset('photos/' . $item->pet->photo) }}" alt="{{ $item->pet->name }}" class="w-full h-full object-cover rounded-full">
                                     </div>
                                     <div class="text-center">
                                         <div class="text-sm text-gray-500 dark:text-gray-400 mb-1">
