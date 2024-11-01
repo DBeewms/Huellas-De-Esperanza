@@ -17,11 +17,11 @@ class AdoptionController extends Controller
     {
         $user = Auth::user();
 
-        // Verificar si el prefil del usuario está completo
+        // Verificar si el perfil del usuario está completo
 
         // Verificar si el usuario ya tiene una mascota en lista de espera
         if (WaitingList::where('user_id', $user->id)->exists()) {
-            return redirect()->back()->with('error', 'You already have a pet in the waiting list.');
+            return redirect()->back()->with('error', 'Ya tienes una mascota en la lista de espera.');
         }
 
         // Añadir a la lista de espera
@@ -35,24 +35,29 @@ class AdoptionController extends Controller
         $pet->status = 'waiting';
         $pet->save();
 
-        return redirect()->route('pets.index')->with('success', 'You have successfully added the pet to the waiting list.');
+        return redirect()->route('pets.index')->with('success', 'Has agregado la mascota a la lista de espera exitosamente.');
     }
 
     public function finalizeAdoption($petId)
     {
         $user = Auth::user();
 
-        // Verificar si la mascota está en la lista de espera del usuario
-        $waitingList = WaitingList::where('user_id', $user->id)->where('pet_id', $petId)->first();
+        // Verificar si el usuario tiene el rol de administrador
+        if ($user->role->name !== 'admin') {
+            return redirect()->back()->with('error', 'No tienes permiso para realizar esta acción.');
+        }
+
+        // Obtener el primer usuario en la lista de espera para esta mascota
+        $waitingList = WaitingList::where('pet_id', $petId)->orderBy('created_at')->first();
         if (!$waitingList) {
-            return redirect()->back()->with('error', 'This pet is not in your waiting list.');
+            return redirect()->back()->with('error', 'No hay usuarios en la lista de espera para esta mascota.');
         }
 
         // Registrar la adopción
         $adoption = new Adoption();
-        $adoption->user_id = $user->id;
+        $adoption->user_id = $waitingList->user_id;
         $adoption->pet_id = $petId;
-        $adoption->status = 'completed'; // Asegurarse de que el estado de la adopción sea "completed"
+        $adoption->status = 'completed';
         $adoption->save();
 
         // Actualizar el estado de la mascota a "adopted"
@@ -63,33 +68,35 @@ class AdoptionController extends Controller
         // Eliminar de la lista de espera de todos los usuarios
         WaitingList::where('pet_id', $petId)->delete();
 
-        return redirect()->route('pets.index')->with('success', 'You have successfully adopted the pet.');
+        return redirect()->route('adoptedPets')->with('success', 'La adopción ha sido finalizada exitosamente.');
     }
 
     public function rejectAdoption($petId)
     {
         $user = Auth::user();
 
-        // Verificar si la mascota está en la lista de espera del usuario
-        $waitingList = WaitingList::where('user_id', $user->id)->where('pet_id', $petId)->first();
-        if (!$waitingList) {
-            return redirect()->back()->with('error', 'This pet is not in your waiting list.');
+        // Verificar si el usuario tiene el rol de administrador
+        if ($user->role->name !== 'admin') {
+            return redirect()->back()->with('error', 'No tienes permiso para realizar esta acción.');
         }
 
-        // Eliminar de la lista de espera del usuario actual
-        $waitingList->delete();
+        // Eliminar el primer usuario de la lista de espera para esta mascota
+        $waitingList = WaitingList::where('pet_id', $petId)->orderBy('created_at')->first();
+        if ($waitingList) {
+            $waitingList->delete();
+        }
 
         // Verificar si hay otros usuarios en la lista de espera para esta mascota
         $remainingWaitingList = WaitingList::where('pet_id', $petId)->exists();
 
         if (!$remainingWaitingList) {
-            // Actualizar el estado de la mascota a "available" si no hay más usuarios en la lista de espera
+            // Actualizar el estado de la mascota a "available"
             $pet = Pet::find($petId);
             $pet->status = 'available';
             $pet->save();
         }
 
-        return redirect()->route('pets.index')->with('success', 'You have successfully rejected the adoption.');
+        return redirect()->route('generalWaitingList')->with('success', 'La solicitud de adopción ha sido rechazada.');
     }
 
     // Lista de espera individual (para usuarios)
@@ -104,8 +111,8 @@ class AdoptionController extends Controller
     // Lista de espera general (solo para administradores)
     public function generalWaitingList()
     {
-        // Verificar si el usuario es administrador
-        if (!Auth::user()->is_admin) {
+        // Verificar si el usuario tiene el rol de administrador
+        if (Auth::user()->role->name !== 'admin') {
             return redirect()->route('dashboard')->with('error', 'No tienes permiso para acceder a esta página.');
         }
 
@@ -127,6 +134,22 @@ class AdoptionController extends Controller
         $adoption = Adoption::with('pet', 'user')->findOrFail($id);
 
         return view('adopted_pets.adopted_pet_details', compact('adoption'));
+    }
+
+    public function myAdoptedPets()
+    {
+        $user = Auth::user();
+        $adoptions = Adoption::where('user_id', $user->id)->with('pet')->get();
+
+        return view('adopted_pets.my_adopted_pets', compact('adoptions'));
+    }
+
+    public function myAdoptedPetDetails($id)
+    {
+        $user = Auth::user();
+        $adoption = Adoption::where('id', $id)->where('user_id', $user->id)->with('pet')->firstOrFail();
+
+        return view('adopted_pets.my_adopted_pet_details', compact('adoption'));
     }
 
     public function exportAdoptedPetsToExcel()

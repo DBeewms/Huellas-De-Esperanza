@@ -23,7 +23,7 @@ Route::get('/', function () {
 });
 
 // Rutas accesibles solo para administradores
-Route::middleware(['auth', 'admin'])->group(function () {
+Route::middleware(['auth', 'role:admin'])->group(function () {
     // Rutas de tipos de mascotas
     Route::get('/pet_types', [PetTypeController::class, 'index'])->name('pet_types.index');
     Route::get('/pet_types/create', [PetTypeController::class, 'create'])->name('pet_types.create');
