@@ -6,6 +6,7 @@ use App\Http\Controllers\PetTypeController;
 use App\Http\Controllers\PetController;
 use App\Http\Controllers\Dashboard;
 use App\Http\Controllers\AdoptionController;
+use App\Http\Controllers\RescueOrganizationController;
 
 /*
 |--------------------------------------------------------------------------
@@ -43,11 +44,18 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
     // Exportar lista de mascotas adoptadas a Excel y PDF
     Route::get('/export-adopted-pets-excel', [AdoptionController::class, 'exportAdoptedPetsToExcel'])->name('exportAdoptedPetsToExcel');
     Route::get('/export-adopted-pets-pdf', [AdoptionController::class, 'exportAdoptedPetsToPdf'])->name('exportAdoptedPetsToPdf');
+
+    // Rutas de adopción accesibles solo para administradores
+    Route::post('/finalize-adoption/{petId}', [AdoptionController::class, 'finalizeAdoption'])->name('finalizeAdoption');
+    Route::post('/reject-adoption/{petId}', [AdoptionController::class, 'rejectAdoption'])->name('rejectAdoption');
 });
 
 // Rutas accesibles para todos los visitantes
 Route::get('/pets', [PetController::class, 'index'])->name('pets.index');
 Route::get('/pets/{pet}', [PetController::class, 'show'])->name('pets.show');
+// Ruta para organizaciones de rescate
+Route::get('/rescue_organizations', [RescueOrganizationController::class, 'index'])->name('rescue_organizations.index');
+Route::get('/rescue_organizations/{userId}', [RescueOrganizationController::class, 'show'])->name('rescue_organizations.show');
 
 // Rutas accesibles solo para usuarios autenticados
 Route::middleware('auth')->group(function () {

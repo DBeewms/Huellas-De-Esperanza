@@ -12,8 +12,10 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('users', function (Blueprint $table) {
-            //
-            $table->foreignId('role_id')->default(2)->constrained()->onDelete('cascade');
+            // Campos adicionales
+            $table->string('address')->nullable()->after('password');
+            $table->string('phone')->nullable()->after('address');
+            $table->string('contact_email')->nullable()->after('phone');
         });
     }
 
@@ -24,9 +26,7 @@ return new class extends Migration
     {
         Schema::table('users', function (Blueprint $table) {
             //
-            // Eliminar la clave foránea y la columna
-            $table->dropForeign(['role_id']);
-            $table->dropColumn('role_id');
+            $table->dropColumn(['address', 'phone', 'contact_email']);
         });
     }
 };
